@@ -1,10 +1,12 @@
 package model;
 
-public class Movie {
+import java.io.Serializable;
+
+public class Movie implements Serializable {
     private String name;
     private String director;
 
-    public Movie(String name, String director) {
+    public Movie(String name, String director)  {
         this.name = name;
         this.director = director;
     }

@@ -1,4 +1,5 @@
 import com.google.gson.Gson;
+import com.sun.jdi.ClassType;
 import model.Movie;
 import model.Session;
 import model.Theatre;
@@ -52,47 +53,58 @@ public class SerializationExercises {
         Deserialize the objects created in exercise 1.
         Now serialize them using ObjectOutputStream
      */
-    public static class Exercise2 {
-        public static void main(String[] args) throws IOException {
+    public static class Exercise2 implements Serializable {
+        public static Movie deserializeMovieJson(String file) throws IOException {
             Gson gson = new Gson();
-            FileReader fr = new FileReader("movie1.json");
+            FileReader fr = new FileReader(String.valueOf(file));
             BufferedReader br = new BufferedReader(fr);
             String line = br.readLine();
             fr.close();
             br.close();
-            Movie movie1 = gson.fromJson(line, Movie.class);
-            fr = new FileReader("movie2.json");
-            br = new BufferedReader(fr);
-            line = br.readLine();
-            Movie movie2 = gson.fromJson(line, Movie.class);
-            fr.close();
-            br.close();
-            fr = new FileReader("theatre1.json");
-            br = new BufferedReader(fr);
-            line = br.readLine();
-            Theatre theatre1 = gson.fromJson(line, Theatre.class);
-            fr.close();
-            br.close();
-            fr = new FileReader("theatre2.json");
-            br = new BufferedReader(fr);
-            line = br.readLine();
-            Theatre theatre2 = gson.fromJson(line, Theatre.class);
-            fr.close();
-            br.close();
-            fr = new FileReader("session1.json");
-            br = new BufferedReader(fr);
-            line = br.readLine();
-            Session session1 = gson.fromJson(line, Session.class);
-            fr.close();
-            br.close();
-            fr = new FileReader("session2.json");
-            br = new BufferedReader(fr);
-            line = br.readLine();
-            Session session2 = gson.fromJson(line, Session.class);
-            fr.close();
-            br.close();
+            return gson.fromJson(line, Movie.class);
+        }
 
+        public static Theatre deserializeTheatreJson(String file) throws IOException {
+            Gson gson = new Gson();
+            FileReader fr = new FileReader(String.valueOf(file));
+            BufferedReader br = new BufferedReader(fr);
+            String line = br.readLine();
+            fr.close();
+            br.close();
+            return gson.fromJson(line, Theatre.class);
+        }
 
+        public static Session deserializeSessionJson(String file) throws IOException {
+            Gson gson = new Gson();
+            FileReader fr = new FileReader(String.valueOf(file));
+            BufferedReader br = new BufferedReader(fr);
+            String line = br.readLine();
+            fr.close();
+            br.close();
+            return gson.fromJson(line, Session.class);
+        }
+
+        public static void serialize(String fileName, Object obj) throws IOException {
+            FileOutputStream fos = new FileOutputStream(fileName);
+            ObjectOutputStream oos = new ObjectOutputStream(fos);
+            oos.writeObject(obj);
+            oos.flush();
+            oos.close();
+        }
+
+        public static void main(String[] args) throws IOException {
+            Movie movie1 = deserializeMovieJson("movie1.json");
+            Movie movie2 = deserializeMovieJson("movie2.json");
+            Theatre theatre1 = deserializeTheatreJson("theatre1.json");
+            Theatre theatre2 = deserializeTheatreJson("theatre2.json");
+            Session session1 = deserializeSessionJson("session1.json");
+            Session session2 = deserializeSessionJson("session2.json");
+            serialize("movie1.txt", movie1);
+            serialize("movie2.txt", movie2);
+            serialize("theatre1.txt", theatre1);
+            serialize("theatre2.txt", theatre2);
+            serialize("session1.txt", session1);
+            serialize("session2.txt", session2);
         }
     }
 
@@ -101,7 +113,35 @@ public class SerializationExercises {
     */
     public static class Exercise3 {
 
-        public static void main(String[] args) {
+        public static Movie deserializeMovie(String fileName) throws IOException, ClassNotFoundException {
+            FileInputStream fis = new FileInputStream(fileName);
+            ObjectInputStream ois = new ObjectInputStream(fis);
+            Movie object = (Movie) ois.readObject();
+            ois.close();
+            return object;
+        }
+        public static Theatre deserializeTheatre(String fileName) throws IOException, ClassNotFoundException {
+            FileInputStream fis = new FileInputStream(fileName);
+            ObjectInputStream ois = new ObjectInputStream(fis);
+            Theatre object = (Theatre) ois.readObject();
+            ois.close();
+            return object;
+        }
+        public static Session deserializeSession(String fileName) throws IOException, ClassNotFoundException {
+            FileInputStream fis = new FileInputStream(fileName);
+            ObjectInputStream ois = new ObjectInputStream(fis);
+            Session object = (Session) ois.readObject();
+            ois.close();
+            return object;
+        }
+
+        public static void main(String[] args) throws IOException, ClassNotFoundException {
+            Movie movie1 = deserializeMovie("movie1.txt");
+            Movie movie2 = deserializeMovie("movie2.txt");
+            Theatre theatre1 = deserializeTheatre("theatre1.txt");
+            Theatre theatre2 = deserializeTheatre("theatre2.txt");
+            Session session1 = deserializeSession("session1.txt");
+            Session session2 = deserializeSession("session2.txt");
 
         }
     }

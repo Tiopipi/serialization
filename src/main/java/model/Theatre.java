@@ -1,6 +1,8 @@
 package model;
 
-public class Theatre {
+import java.io.Serializable;
+
+public class Theatre implements Serializable {
     private String name;
     private String address;
     private int number;

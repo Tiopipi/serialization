@@ -14,6 +14,13 @@ public class SerializationExercises {
         Serialize to Json all objects and save then in different files.
      */
     public static class Exercise1 {
+        public static void serializeAndSaveJson(String fileName, Object obj) throws IOException {
+            Gson gson = new Gson();
+            String json = gson.toJson(obj);
+            FileWriter fw = new FileWriter(fileName);
+            fw.write(json);
+            fw.close();
+        }
         public static void main(String[] args) throws IOException {
             Movie movie1 = new Movie("Lost", "Steven");
             Movie movie2 = new Movie("La ola", "Almodovar");
@@ -21,31 +28,13 @@ public class SerializationExercises {
             Theatre theatre2 = new Theatre("Teatro de Madrid", "Madrid", 12);
             Session session1 = new Session(movie1, theatre1);
             Session session2 = new Session(movie2, theatre2);
-            Gson gson = new Gson();
-            String json = gson.toJson(movie1);
-            FileWriter file = new FileWriter("movie1.json");
-            file.write(json);
-            file.close();
-            String json2 = gson.toJson(movie2);
-            FileWriter file2 = new FileWriter("movie2.json");
-            file2.write(json2);
-            file2.close();
-            String json3 = gson.toJson(theatre1);
-            FileWriter file3 = new FileWriter("theatre1.json");
-            file3.write(json3);
-            file3.close();
-            String json4 = gson.toJson(theatre2);
-            FileWriter file4 = new FileWriter("theatre2.json");
-            file4.write(json4);
-            file4.close();
-            String json5 = gson.toJson(session1);
-            FileWriter file5 = new FileWriter("session1.json");
-            file5.write(json5);
-            file5.close();
-            String json6 = gson.toJson(session2);
-            FileWriter file6 = new FileWriter("session2.json");
-            file6.write(json6);
-            file6.close();
+            serializeAndSaveJson("movie1.json", movie1);
+            serializeAndSaveJson("movie2.json", movie2);
+            serializeAndSaveJson("theatre1.json", theatre1);
+            serializeAndSaveJson("theatre2.json", theatre2);
+            serializeAndSaveJson("session1.json", session1);
+            serializeAndSaveJson("session2.json", session2);
+
         }
     }
 
@@ -84,7 +73,7 @@ public class SerializationExercises {
             return gson.fromJson(line, Session.class);
         }
 
-        public static void serialize(String fileName, Object obj) throws IOException {
+        public static void serializeAndSave(String fileName, Object obj) throws IOException {
             FileOutputStream fos = new FileOutputStream(fileName);
             ObjectOutputStream oos = new ObjectOutputStream(fos);
             oos.writeObject(obj);
@@ -99,12 +88,12 @@ public class SerializationExercises {
             Theatre theatre2 = deserializeTheatreJson("theatre2.json");
             Session session1 = deserializeSessionJson("session1.json");
             Session session2 = deserializeSessionJson("session2.json");
-            serialize("movie1.txt", movie1);
-            serialize("movie2.txt", movie2);
-            serialize("theatre1.txt", theatre1);
-            serialize("theatre2.txt", theatre2);
-            serialize("session1.txt", session1);
-            serialize("session2.txt", session2);
+            serializeAndSave("movie1.txt", movie1);
+            serializeAndSave("movie2.txt", movie2);
+            serializeAndSave("theatre1.txt", theatre1);
+            serializeAndSave("theatre2.txt", theatre2);
+            serializeAndSave("session1.txt", session1);
+            serializeAndSave("session2.txt", session2);
         }
     }
 
